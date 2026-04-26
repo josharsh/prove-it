@@ -13,13 +13,11 @@ A Claude Code skill that challenges tests to actually catch bugs.
 
 ## Why I Built This
 
-I asked Claude to write tests for a cart module. It gave me 12 tests, all green, 95% coverage. Looked great.
+AI-generated tests look great on paper. High coverage, all green, clean output. Then you actually read them and find tests that never call the function they're testing, assertions so loose they'd pass on any input, and expected values computed with the same logic as the implementation.
 
-Then I read them. One test imported `calculateTotal` but never called it -- it computed the total inline with `reduce()` and asserted on that. Another test's only assertion was `toBeDefined()`. A third one replicated the discount logic from the implementation to compute the expected value, so if the code was wrong, the test would be wrong in the exact same way.
+Coverage was high. Confidence was zero.
 
-Coverage was high. Confidence was zero. These tests would pass if I replaced the entire module with `return 42`.
-
-`/prove-it` makes Claude skeptic about its own tests. Every test gets a verdict: **PASSES**, **WEAK**, or **THEATER**.
+`/prove-it` makes Claude skeptical about its own tests. Every test gets a verdict: **PASSES**, **WEAK**, or **THEATER**.
 
 ## Demo
 
