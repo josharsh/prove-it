@@ -1,0 +1,59 @@
+{
+  "skill": "prove-it",
+  "tests": [
+    {
+      "name": "detects test that never calls the actual function",
+      "prompt": "Review this test file:\n\n```typescript\nimport { calculateTotal } from './cart';\n\ntest('calculates total correctly', () => {\n  const items = [{ price: 10 }, { price: 20 }, { price: 5 }];\n  const total = items.reduce((sum, item) => sum + item.price, 0);\n  expect(total).toBe(35);\n});\n```\n\nThe implementation file cart.ts exports calculateTotal(items).",
+      "assertions": [
+        { "type": "contains", "value": "THEATER" },
+        { "type": "pattern", "value": "never (calls|invokes|uses)" },
+        { "type": "contains", "value": "calculateTotal" }
+      ]
+    },
+    {
+      "name": "detects too-loose assertion that proves nothing",
+      "prompt": "Review this test:\n\n```typescript\nimport { getUser } from './users';\n\ntest('fetches user by id', async () => {\n  const user = await getUser(42);\n  expect(user).toBeDefined();\n});\n```\n\nThe implementation getUser(id) returns { id, name, email } from a database.",
+      "assertions": [
+        { "type": "contains", "value": "WEAK" },
+        { "type": "pattern", "value": "(toBeDefined|too loose|pass regardless|any.* value)" },
+        { "type": "not-contains", "value": "PASSES" }
+      ]
+    },
+    {
+      "name": "detects test that replicates implementation logic for expected value",
+      "prompt": "Review this test:\n\n```typescript\nimport { applyDiscount } from './pricing';\n\ntest('applies percentage discount', () => {\n  const price = 250;\n  const discount = 0.15;\n  const expected = price - (price * discount);\n  expect(applyDiscount(price, discount)).toBe(expected);\n});\n```\n\nThe implementation of applyDiscount is: `(price, discount) => price - (price * discount)`.",
+      "assertions": [
+        { "type": "pattern", "value": "(THEATER|WEAK)" },
+        { "type": "pattern", "value": "(replicat|duplicat|same logic|mirrors|copies)" },
+        { "type": "contains", "value": "hardcoded" }
+      ]
+    },
+    {
+      "name": "flags missing edge cases when none are tested",
+      "prompt": "Review this test file:\n\n```typescript\nimport { parseNames } from './parser';\n\ntest('parses comma-separated names', () => {\n  expect(parseNames('Alice,Bob,Charlie')).toEqual(['Alice', 'Bob', 'Charlie']);\n});\n\ntest('parses names with spaces', () => {\n  expect(parseNames('Alice, Bob, Charlie')).toEqual(['Alice', 'Bob', 'Charlie']);\n});\n```\n\nThe implementation parseNames(input: string): string[] splits on commas and trims whitespace.",
+      "assertions": [
+        { "type": "pattern", "value": "(empty|edge case|null|undefined|error)" },
+        { "type": "pattern", "value": "(WEAK|missing|suggest|should also|consider)" },
+        { "type": "not-contains", "value": "THEATER" }
+      ]
+    },
+    {
+      "name": "recognizes a solid test without manufacturing issues",
+      "prompt": "Review this test file:\n\n```typescript\nimport { validateEmail } from './validation';\n\ntest('accepts valid email', () => {\n  expect(validateEmail('user@example.com')).toBe(true);\n});\n\ntest('rejects email without @', () => {\n  expect(validateEmail('userexample.com')).toBe(false);\n});\n\ntest('rejects empty string', () => {\n  expect(validateEmail('')).toBe(false);\n});\n\ntest('rejects null input', () => {\n  expect(validateEmail(null)).toBe(false);\n});\n```\n\nThe implementation validates email format and handles null/empty input.",
+      "assertions": [
+        { "type": "contains", "value": "PASSES" },
+        { "type": "not-contains", "value": "THEATER" },
+        { "type": "pattern", "value": "(solid|good|thorough|well|strong|edge case)" }
+      ]
+    },
+    {
+      "name": "provides structured review with verdicts and summary",
+      "prompt": "Review this test file:\n\n```typescript\nimport { add, multiply } from './math';\n\ntest('adds numbers', () => {\n  expect(add(2, 3)).toBe(5);\n});\n\ntest('multiplies numbers', () => {\n  const a = 4;\n  const b = 5;\n  const expected = a * b;\n  expect(multiply(a, b)).toBe(expected);\n});\n\ntest('handles something', () => {\n  const result = [1, 2, 3].length;\n  expect(result).toBe(3);\n});\n```\n\nThe implementation exports add(a,b) and multiply(a,b).",
+      "assertions": [
+        { "type": "pattern", "value": "(PASSES|WEAK|THEATER)" },
+        { "type": "pattern", "value": "\\d+ test" },
+        { "type": "pattern", "value": "(Summary|Verdict|Review)" }
+      ]
+    }
+  ]
+}

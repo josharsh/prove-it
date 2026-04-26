@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "prove-it",
+  "owner": {
+    "name": "Harsh Joshi",
+    "url": "https://github.com/josharsh"
+  },
+  "metadata": {
+    "description": "A Claude Code skill that challenges tests to actually catch bugs. Detects test theater, weak assertions, and missing edge cases.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "prove-it",
+      "description": "Review tests for false confidence — detect assertions that prove nothing, tests that never call real code, and missing edge cases. Verdicts: PASSES, WEAK, or THEATER.",
+      "source": "./",
+      "license": "MIT",
+      "category": "development",
+      "keywords": [
+        "testing",
+        "test-review",
+        "test-quality",
+        "assertions",
+        "code-review",
+        "test-theater",
+        "coverage"
+      ],
+      "skills": [
+        "./skills/prove-it"
+      ]
+    }
+  ]
+}
