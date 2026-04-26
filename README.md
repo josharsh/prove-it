@@ -1,29 +1,31 @@
-# prove-it
+# Prove It
 
-A Claude Code skill that challenges tests to actually catch bugs. If a test would pass even when the code is wrong, it's theater -- not testing.
+A Claude Code skill that challenges tests to actually catch bugs. If a test would pass even when the code is wrong, it's theater, not testing.
 
 ## Install
 
-**Plugin marketplace:**
-
-```bash
-claude plugin add josharsh/prove-it
+**Via Claude Code plugin system (recommended):**
+```
+/plugin marketplace add https://github.com/josharsh/prove-it
 ```
 
-**Manual:**
-
+**Via install script:**
 ```bash
 git clone https://github.com/josharsh/prove-it.git
 cd prove-it
-bash install.sh
+./install.sh
 ```
 
-Or copy directly:
+**Manual:** Copy `skills/prove-it/SKILL.md` to `~/.claude/skills/prove-it/`.
 
-```bash
-mkdir -p ~/.claude/skills/prove-it
-cp skills/prove-it/SKILL.md ~/.claude/skills/prove-it/SKILL.md
-```
+## How It Works
+
+Prove It operates in two modes:
+
+- **Automatic** -- after writing any test, Claude reviews it against a 6-point checklist before presenting it to you. Bad tests get fixed silently.
+- **On demand** -- say "prove it", "review my tests", "check these tests", or run `/prove-it check` to review existing test files.
+
+Every test gets a verdict: **PASSES** (catches real bugs), **WEAK** (catches some but misses obvious ones), or **THEATER** (looks like a test but proves nothing).
 
 ## Demo
 
@@ -62,29 +64,39 @@ Prove It enabled. I'll challenge tests to make sure they actually catch bugs.
 5. **Does the mock match reality?** Mocks that only return happy-path data hide real failures.
 6. **Is the test name honest?** A test named "validates email" should actually check validation results.
 
-## Why This Exists
-
-AI-generated tests achieve 95% coverage but catch nothing. Tests that construct data and assert on that same data. Tests where `toBeDefined()` is the only assertion. Tests that duplicate the implementation to compute expected values.
-
-43% of AI-generated code changes need debugging in production. Coverage numbers feel good. Bug counts don't change. The problem isn't that we lack tests -- it's that the tests don't prove anything.
-
 ## Commands
 
-- **`/prove-it`** -- Activate the skill. Automatically reviews tests as you write them.
-- **`/prove-it check`** -- Immediately scan and review the most recent test file.
+| Command | What it does |
+|---|---|
+| `/prove-it` | Activate the skill. Automatically reviews tests as you write them |
+| `/prove-it check` | Immediately scan and review the most recent test file |
+
+You can also use natural language: "prove it", "review my tests", "check these tests".
+
+## Why This Exists
+
+AI-generated tests achieve high coverage but catch nothing. Tests that construct data and assert on that same data. Tests where `toBeDefined()` is the only assertion. Tests that duplicate the implementation to compute expected values.
+
+Coverage numbers feel good. Bug counts don't change. The problem isn't that we lack tests -- it's that the tests don't prove anything.
+
+## Testing
+
+Tests are defined in `tests.json` and compatible with [skillmother](https://github.com/josharsh/skillmother):
+
+```bash
+skillmother test ~/Development/prove-it/
+```
 
 ## Uninstalling
 
-**Plugin marketplace:**
-
-```bash
-claude plugin remove prove-it
-```
-
-**Manual:**
-
 ```bash
 rm -rf ~/.claude/skills/prove-it
+```
+
+Or remove via the plugin marketplace:
+
+```
+/plugin marketplace remove prove-it
 ```
 
 ## License
