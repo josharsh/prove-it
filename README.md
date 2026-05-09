@@ -4,12 +4,19 @@ A Claude Code skill that challenges tests to actually catch bugs.
 
 ## Install
 
-**Plugin marketplace:**
+In Claude Code, run:
+
 ```
-/plugin marketplace add https://github.com/josharsh/prove-it
+/plugin marketplace add josharsh/prove-it
 ```
 
-**Manual:** Copy `skills/prove-it/SKILL.md` to `~/.claude/skills/prove-it/`.
+Or manually:
+
+```bash
+mkdir -p ~/.claude/skills/prove-it
+curl -sL https://raw.githubusercontent.com/josharsh/prove-it/main/skills/prove-it/SKILL.md \
+  -o ~/.claude/skills/prove-it/SKILL.md
+```
 
 ## Why I Built This
 
